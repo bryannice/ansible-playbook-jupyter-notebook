@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+    - name: Install Ansible Roles
+      local_action: ansible-galaxy install -r requirements.yml
+    - name: Execute playbook
+      include: playbook.yml

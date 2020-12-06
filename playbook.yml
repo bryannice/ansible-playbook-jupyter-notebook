@@ -1,7 +1,6 @@
 ---
 - hosts: all
   become: true
-  connection: local
   gather_facts: true
   vars:
     build_docker_image: "{{ lookup('env', 'BUILD_DOCKER_IMAGE') | default('F', true) }}"
@@ -9,7 +8,5 @@
     - name: Gather package facts
       package_facts:
         manager: auto
-    - name: Install Ansible Roles
-      local_action: ansible-galaxy install -r requirements.yml
   roles:
     - jupyter-notebook
