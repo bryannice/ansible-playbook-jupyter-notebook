@@ -8,5 +8,11 @@
     - name: Gather package facts
       package_facts:
         manager: auto
-  roles:
-    - jupyter-notebook
+    - name: Install Ansible Roles
+      local_action:
+        module: shell
+        cmd: ansible-galaxy install -r requirements.yml
+  tasks:
+    - name: Execute Jupyter Notebook Install Process
+      include_role:
+        name: notebook
