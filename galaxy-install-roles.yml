@@ -2,6 +2,6 @@
 - hosts: all
   tasks:
     - name: Install Ansible Roles
-      delegate_to: localhost
-      shell:
+      local_action:
+        module: shell
         cmd: ansible-galaxy install -r requirements.yml
