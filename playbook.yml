@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: true
+  connection: local
   gather_facts: true
   vars:
     build_docker_image: "{{ lookup('env', 'BUILD_DOCKER_IMAGE') | default('F', true) }}"
