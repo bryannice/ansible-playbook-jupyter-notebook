@@ -5,5 +5,3 @@
       delegate_to: localhost
       shell:
         cmd: ansible-galaxy install -r requirements.yml
-    - name: Execute playbook
-      include: playbook.yml
