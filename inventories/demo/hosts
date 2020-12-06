@@ -1,0 +1,5 @@
+[demonstration]
+host.docker.internal:2222
+
+[demo:children]
+demonstration
