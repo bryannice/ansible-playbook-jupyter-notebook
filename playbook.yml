@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    docker_image: "{{ lookup('env', 'DCCKER_IMAGE') | default('F', true) }}"
+  pre_tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+  roles:
+    - jupyter-notebook
