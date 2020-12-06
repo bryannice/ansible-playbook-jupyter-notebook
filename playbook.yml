@@ -9,7 +9,6 @@
       package_facts:
         manager: auto
     - name: Install Ansible Roles
-      shell:
-        cmd: ansible-galaxy install -r requirements.yml
+      local_action: ansible-galaxy install -r requirements.yml
   roles:
     - jupyter-notebook
