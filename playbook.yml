@@ -3,10 +3,13 @@
   become: true
   gather_facts: true
   vars:
-    docker_image: "{{ lookup('env', 'DCCKER_IMAGE') | default('F', true) }}"
+    build_docker_image: "{{ lookup('env', 'BUILD_DOCKER_IMAGE') | default('F', true) }}"
   pre_tasks:
     - name: Gather package facts
       package_facts:
         manager: auto
+    - name: Install Ansible Roles
+      shell:
+        cmd: ansible-galaxy install -r requirements.yml
   roles:
     - jupyter-notebook
