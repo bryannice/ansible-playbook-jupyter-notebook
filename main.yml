@@ -1,5 +1,3 @@
 ---
-- name: Install Ansible Roles
-  include_playbook: galaxy-install-roles.yml
-- name: Run Ansible Playbook
-  include_playbook: playbook.yml
+- include_playbook: galaxy-install-roles.yml
+- include_playbook: playbook.yml
