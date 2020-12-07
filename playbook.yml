@@ -1,18 +1,24 @@
 ---
-- hosts: all
-  become: true
-  gather_facts: true
-  vars:
-    build_docker_image: "{{ lookup('env', 'BUILD_DOCKER_IMAGE') | default('F', true) }}"
-  pre_tasks:
-    - name: Gather package facts
-      package_facts:
-        manager: auto
+- name: Fetching required Ansible Roles
+  hosts: localhost
+  become: false
+  connection: local
+  gather_facts: false
+  tasks:
     - name: Install Ansible Roles
       local_action:
         module: shell
         cmd: ansible-galaxy install -r requirements.yml
+
+- name: Applying Ansible Playbook
+  hosts: all
+  become: true
+  gather_facts: true
+  pre_tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
   tasks:
     - name: Execute Jupyter Notebook Install Process
       include_role:
-        name: notebook
+        name: jupyter-notebook

@@ -1,8 +1,0 @@
----
-- hosts: 127.0.0.1
-  connection: local
-  tasks:
-    - name: Install Ansible Roles
-      local_action:
-        module: shell
-        cmd: ansible-galaxy install -r requirements.yml
