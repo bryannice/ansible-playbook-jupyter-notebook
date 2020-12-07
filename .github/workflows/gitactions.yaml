@@ -31,6 +31,14 @@ jobs:
           PKR_VAR_git_code_version: ${{ steps.get_tag_name.outputs.tag_name }}
         id: build_docker_image
         run: packer build -only=local-ansible-agent-for-docker.docker.ansible packer-ansible/
+      - name: Update Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2.4.1
+        if: success()
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          repository: bryannice/jupyter-notebook
+          readme-filepath: README.md
   logDockerBuild:
     needs: buildDockerImage
     if: always()
