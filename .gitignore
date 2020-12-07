@@ -77,3 +77,4 @@ backend.tf
 
 .ssh
 .ansible
+.bash_history
