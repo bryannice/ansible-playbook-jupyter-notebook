@@ -3,7 +3,7 @@ name: Semantic Tag Trigger, Build Docker Image, and Push to Docker Hub
 on:
   push:
     tags:
-      - '^[0-9]+\.[0-9]+\.[0-9]+$'
+      - '[0-9]+\.[0-9]+\.[0-9]+'
 
 jobs:
   buildDockerImage:
@@ -48,7 +48,7 @@ jobs:
         run: curl -v -L -u runner:${{ secrets.GITHUB_TOKEN }} -o build_logs.txt ${{ steps.job_info.outputs.log_url }}/logs
       - name: Slack Notification
         id: slack_notification
-        uses: bryannice/gitaction-slack-notification@1.1.0
+        uses: bryannice/gitactions-slack-notification@1.1.0
         if: contains(steps.job_info.outputs.status, 'failure')
         env:
           SLACK_CHANNEL: production-build-failures
