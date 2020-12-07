@@ -16,7 +16,7 @@ jobs:
         run: printenv
       - name: Get Packer Build Configuration
         env:
-          PACKER_ANSIBLE_VERSION: issue-3.bryan.nice
+          PACKER_ANSIBLE_VERSION: issue-3.bryan-nice 
         run: | 
           git clone https://github.com/bryannice/packer-ansible
           cd packer-ansible
