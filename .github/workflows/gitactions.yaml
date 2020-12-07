@@ -3,7 +3,7 @@ name: Semantic Tag Trigger, Build Docker Image, and Push to Docker Hub
 on:
   push:
     tags:
-      - '[0-9]+\.[0-9]+\.[0-9]+'
+      - '^[0-9]+\.[0-9]+\.[0-9]+$'
 
 jobs:
   buildDockerImage:
@@ -17,7 +17,7 @@ jobs:
         run: printenv
       - name: Get Packer Build Configuration
         env:
-          PACKER_ANSIBLE_VERSION: 2.0.0
+          PACKER_ANSIBLE_VERSION: 2.0.1
         run: | 
           git clone https://github.com/bryannice/packer-ansible
           cd packer-ansible
