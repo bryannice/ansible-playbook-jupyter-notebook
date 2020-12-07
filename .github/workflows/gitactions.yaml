@@ -29,7 +29,7 @@ jobs:
           PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
           PKR_VAR_git_code_version: "1.1.0"
         id: build_docker_image
-        run: packer build -only=local-agent.docker.ansible packer-ansible/
+        run: packer build -only=local-ansible-agent-for-docker.docker.ansible packer-ansible/
 #  logDockerBuild:
 #    needs: buildDockerImage
 #    if: always()
