@@ -2,8 +2,8 @@ name: Semantic Tag Trigger, Build Docker Image, and Push to Docker Hub
 
 on:
   push:
-    branches-ignore:
-      - master 
+#    branches-ignore:
+#      - master 
 #    tags:
 #      - '^[0-9.]+$'
 
