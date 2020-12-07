@@ -21,7 +21,7 @@ jobs:
           git clone https://github.com/bryannice/packer-ansible
           cd packer-ansible
           git checkout ${PACKER_ANSIBLE_VERSION}
-      - name: Build Docker Image
+      - name: Build Docker Image11
         env:
           PKR_VAR_container_registry_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           PKR_VAR_container_registry_server: https://index.docker.io/v1/
