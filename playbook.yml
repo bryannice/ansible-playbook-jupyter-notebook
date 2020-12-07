@@ -12,7 +12,7 @@
 
 - name: Applying Ansible Playbook
   hosts: all
-  become: true
+  become: false
   gather_facts: true
   pre_tasks:
     - name: Gather package facts
