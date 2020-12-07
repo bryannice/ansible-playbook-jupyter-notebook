@@ -28,6 +28,7 @@ jobs:
           PKR_VAR_container_registry_username: ${{ secrets.DOCKER_HUB_USERNAME }}
           PKR_VAR_docker_repository: bryannice/jupyter-notebook
           PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
+          PKR_VAR_git_code_version: "1.0.0"
         id: build_docker_image
         run: packer build -only=local-agent.docker.ansible packer-ansible/
 #  logDockerBuild:
