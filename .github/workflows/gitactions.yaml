@@ -24,6 +24,7 @@ jobs:
       - name: Build Docker Image
         env:
           PKR_VAR_container_registry_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PKR_VAR_container_registry_server: https://hub.docker.com/
           PKR_VAR_container_registry_username: ${{ secrets.DOCKER_HUB_USERNAME }}
           PKR_VAR_docker_repository: bryannice/jupyter-notebook
           PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
