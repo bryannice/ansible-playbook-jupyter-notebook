@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker Image
         env:
             PKR_VAR_docker_repository: bryannice/jupyter-notebook
-            PKR_VAR_ansible_playbook_path: ${PWD}
+            PKR_VAR_ansible_playbook_path: ${{ github.github_workspace }}
         id: build_docker_image
         run: packer build -only=local-agent.docker.ansible packer-ansible/
 #  logDockerBuild:
