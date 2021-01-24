@@ -12,14 +12,9 @@
 
 - name: Applying Ansible Playbook
   hosts: all
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
   become: false
   gather_facts: true
   pre_tasks:
-    - name: Gather package facts
-      package_facts:
-        manager: auto
     - name: Install Python 3 on Debian
       apt:
         name:
