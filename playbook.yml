@@ -13,7 +13,11 @@
 - name: Applying Ansible Playbook
   hosts: all
   become: false
-  gather_facts: false
+  gather_facts: true
+  pre_tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
   tasks:
     - name: Execute Jupyter Notebook Install Process
       include_role:
