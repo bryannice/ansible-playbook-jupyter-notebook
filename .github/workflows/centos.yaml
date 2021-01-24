@@ -1,0 +1,84 @@
+name: Build CentOS Container and Push to Docker Hub
+
+on:
+  push:
+    tags:
+      - '[0-9]+\.[0-9]+\.[0-9]+'
+
+jobs:
+  buildDockerImage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set Tag Name
+        id: get_tag_name
+        run: echo ::set-output name=tag_name::$(echo ${GITHUB_REF##*/})
+      - name: Capture environment variables
+        run: printenv
+      - name: Get Packer Build Configuration
+        env:
+          PACKER_ANSIBLE_VERSION: 2.1.0
+        run: | 
+          git clone https://github.com/bryannice/packer-ansible
+          cd packer-ansible
+          git checkout ${PACKER_ANSIBLE_VERSION}
+      - name: Build Docker Image
+        env:
+          PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
+          PKR_VAR_container_registry_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          PKR_VAR_container_registry_username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          PKR_VAR_container_repository: bryannice/jupyter-notebook
+          PKR_VAR_git_code_version: ${{ steps.get_tag_name.outputs.tag_name }}
+          PKR_VAR_os_name: centos8-2
+        id: build_docker_image
+        run: packer build -only=local-ansible-agent-for-docker.docker.ansible packer-ansible/
+      - name: Update Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2.4.1
+        if: success()
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          repository: bryannice/jupyter-notebook
+          readme-filepath: README.md
+  logDockerBuild:
+    needs: buildDockerImage
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Variables With Build Info
+        id: job_info
+        run: |
+          curl -v -L -u runner:${{ secrets.GITHUB_TOKEN }} -o job_info.json https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${{ github.run_id }}/jobs
+          echo ::set-output name=log_url::$(cat job_info.json | jq --raw-output '.jobs | .[0] | .url')
+          echo ::set-output name=html_url::$(cat job_info.json | jq --raw-output '.jobs | .[0] | .html_url')
+          echo ::set-output name=status::$(cat job_info.json | jq --raw-output '.jobs | .[0] | .conclusion')
+          echo ::set-output name=branch_name::$(echo ${GITHUB_REF##*/})
+      - name: Generate log file
+        run: curl -v -L -u runner:${{ secrets.GITHUB_TOKEN }} -o build_logs.txt ${{ steps.job_info.outputs.log_url }}/logs
+      - name: Slack Notification
+        id: slack_notification
+        uses: bryannice/gitactions-slack-notification@1.1.0
+        if: contains(steps.job_info.outputs.status, 'failure')
+        env:
+          SLACK_CHANNEL: production-build-failures
+          SLACK_COLOR: '#3278BD'
+          SLACK_TITLE: Failed to build docker image on commit sha ${{ github.sha }}
+          SLACK_MESSAGE: |
+            Branch Name: ${{ steps.job_info.outputs.branch_name }}
+            The commit SHA is: ${{ github.sha }}
+            Git Actions Log URL: ${{ steps.job_info.outputs.html_url }}
+          SLACK_USERNAME: ansible-playbook-jupyter-notebook
+          SLACK_WEBHOOK: ${{ secrets.SLACK_INCOMING_WEBHOOK }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_ACTION: ${{ github.action }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_WORKFLOW: ${{ github.workflow }}
+      - name: Persisting log
+        id: persisting_log
+        if: always()
+        uses: actions/upload-artifact@v1
+        with:
+          name: workflow_log
+          path: build_logs.txt

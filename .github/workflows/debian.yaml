@@ -1,4 +1,4 @@
-name: Semantic Tag Trigger, Build Docker Image, and Push to Docker Hub
+name: Build Debian Container and Push to Docker Hub
 
 on:
   push:
@@ -17,18 +17,19 @@ jobs:
         run: printenv
       - name: Get Packer Build Configuration
         env:
-          PACKER_ANSIBLE_VERSION: 2.0.1
+          PACKER_ANSIBLE_VERSION: 2.1.0
         run: | 
           git clone https://github.com/bryannice/packer-ansible
           cd packer-ansible
           git checkout ${PACKER_ANSIBLE_VERSION}
       - name: Build Docker Image
         env:
+          PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
           PKR_VAR_container_registry_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           PKR_VAR_container_registry_username: ${{ secrets.DOCKER_HUB_USERNAME }}
           PKR_VAR_container_repository: bryannice/jupyter-notebook
-          PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
           PKR_VAR_git_code_version: ${{ steps.get_tag_name.outputs.tag_name }}
+          PKR_VAR_os_name: debian10-07
         id: build_docker_image
         run: packer build -only=local-ansible-agent-for-docker.docker.ansible packer-ansible/
       - name: Update Docker Hub Description
