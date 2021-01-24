@@ -13,14 +13,6 @@
 - name: Applying Ansible Playbook
   hosts: all
   become: false
-  gather_facts: true
-  pre_tasks:
-    - name: Install Python 3 on Debian
-      apt:
-        name:
-          - python3-pip
-        state: present
-      when: ansible_os_family == "Debian"
   tasks:
     - name: Execute Jupyter Notebook Install Process
       include_role:
