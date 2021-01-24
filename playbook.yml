@@ -12,6 +12,8 @@
 
 - name: Applying Ansible Playbook
   hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   become: false
   gather_facts: true
   pre_tasks:
