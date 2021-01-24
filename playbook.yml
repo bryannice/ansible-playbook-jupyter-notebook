@@ -18,6 +18,12 @@
     - name: Gather package facts
       package_facts:
         manager: auto
+    - name: Install Python 3 on Debian
+      apt:
+        name:
+          - python3-pip
+        state: absent
+      when: ansible_os_family == "Debian"
   tasks:
     - name: Execute Jupyter Notebook Install Process
       include_role:
