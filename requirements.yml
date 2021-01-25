@@ -1,5 +1,5 @@
 ---
 - src: https://github.com/bryannice/ansible-role-jupyter-notebook.git
-  version: 1.1.0
+  version: 1.2.0
   name: jupyter-notebook
   scm: git
