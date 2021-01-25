@@ -27,15 +27,15 @@ jobs:
           CONTAINER_IMAGE_BUILDER: true
           PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
           PKR_VAR_base_container_image: "centos:8.3.2011"
-          PKR_VAR_container_entrypoint: "ENTRYPOINT /entrypoint/init.py"
+          PKR_VAR_container_entrypoint: "\'ENTRYPOINT /entrypoint/init.py\'"
           PKR_VAR_container_image_repository: bryannice/jupyter-notebook
           PKR_VAR_container_image_tag: centos-8.7-${{ steps.get_tag_name.outputs.tag_name }}
           PKR_VAR_container_registry_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           PKR_VAR_container_registry_server: https://index.docker.io/v1/
           PKR_VAR_container_registry_username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          PKR_VAR_container_working_directory: "WORKDIR /entrypoint"
+          PKR_VAR_container_working_directory: "\'WORKDIR /entrypoint\'"
         id: build_docker_image
-        run: packer build -only=docker-ansible packer-docker-ansible/
+        run: packer build -only=docker.ansible packer-docker-ansible/
       - name: Update Docker Hub Description
         uses: peter-evans/dockerhub-description@v2.4.1
         if: success()
