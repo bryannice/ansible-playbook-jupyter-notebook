@@ -27,7 +27,6 @@ jobs:
           CONTAINER_IMAGE_BUILDER: true
           PKR_VAR_ansible_playbook_path: ${{ github.workspace }}
           PKR_VAR_base_container_image: "centos:8.3.2011"
-          PKR_VAR_container_entrypoint: "'ENTRYPOINT /entrypoint/init.py'"
           PKR_VAR_container_image_repository: bryannice/jupyter-notebook
           PKR_VAR_container_image_tag: centos-8.7-${{ steps.get_tag_name.outputs.tag_name }}
           PKR_VAR_container_registry_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
