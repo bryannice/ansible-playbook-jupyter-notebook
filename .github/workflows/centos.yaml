@@ -17,7 +17,7 @@ jobs:
         run: printenv
       - name: Get Packer Build Configuration
         env:
-          PACKER_DOCKER_ANSIBLE_VERSION: 1.1.0
+          PACKER_DOCKER_ANSIBLE_VERSION: 1.0.0
         run: | 
           git clone https://github.com/bryannice/packer-docker-ansible
           cd packer-docker-ansible
