@@ -20,7 +20,7 @@ jobs:
           PACKER_DOCKER_ANSIBLE_VERSION: 1.1.0
         run: |
           git clone https://github.com/bryannice/packer-docker-ansible
-          cd packer-ansible
+          cd packer-docker-ansible
           git checkout ${PACKER_DOCKER_ANSIBLE_VERSION}
       - name: Build Docker Image
         env:
