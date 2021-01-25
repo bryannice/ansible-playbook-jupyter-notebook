@@ -14,6 +14,8 @@
   hosts: all
   become: false
   gather_facts: true
+  vars:
+    container_iamge_builder: "{{ lookup('env', 'CONTAINER_IMAGE_BUILDER') | default('container_iamge_builder', false) }}"
   pre_tasks:
     - name: Gather package facts
       package_facts:
